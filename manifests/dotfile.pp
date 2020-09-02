@@ -9,7 +9,7 @@
 # @param config Config hash. This will be expanded to an ini-file.
 #
 # @example Create a pip config in /var/lib/jenkins/.pip/
-#   python::dotfile { '/var/lib/jenkins/.pip/pip.conf':
+#   python_deprecated::dotfile { '/var/lib/jenkins/.pip/pip.conf':
 #     ensure => present,
 #     owner  => 'jenkins',
 #     group  => 'jenkins',
@@ -22,7 +22,7 @@
 #   }
 #
 #
-define python::dotfile (
+define python_deprecated::dotfile (
   Enum['absent', 'present'] $ensure   = 'present',
   String[1] $filename                 = $title,
   String[1] $owner                    = 'root',

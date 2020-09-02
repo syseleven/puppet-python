@@ -18,7 +18,7 @@
 # @param args Custom arguments to add in gunicorn config file.
 #
 # @example run gunicorn on vhost in virtualenv /var/www/project1
-#  python::gunicorn { 'vhost':
+#  python_deprecated::gunicorn { 'vhost':
 #    ensure      => present,
 #    virtualenv  => '/var/www/project1',
 #    mode        => 'wsgi',
@@ -30,10 +30,10 @@
 #    appmodule   => 'app:app',
 #    osenv       => { 'DBHOST' => 'dbserver.example.com' },
 #    timeout     => 30,
-#    template    => 'python/gunicorn.erb',
+#    template    => 'python_deprecated/gunicorn.erb',
 #  }
 #
-define python::gunicorn (
+define python_deprecated::gunicorn (
   Stdlib::Absolutepath $dir,
   Enum['present', 'absent'] $ensure                                = present,
   $config_dir                                                      = '/etc/gunicorn.d',
@@ -52,7 +52,7 @@ define python::gunicorn (
   $accesslog                                                       = false,
   $errorlog                                                        = false,
   Enum['debug', 'info', 'warning', 'error', 'critical'] $log_level = 'error',
-  $template                                                        = 'python/gunicorn.erb',
+  $template                                                        = 'python_deprecated/gunicorn.erb',
   $args                                                            = [],
 ) {
   if $manage_config_dir {

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'python::requirements', type: :define do
+describe 'python_deprecated::requirements', type: :define do
   on_supported_os.each do |os, facts|
     context "on #{os} " do
       let :facts do

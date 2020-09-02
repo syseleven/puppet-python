@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'python::gunicorn', type: :define do
+describe 'python_deprecated::gunicorn', type: :define do
   let(:title) { 'test-app' }
 
   context 'on Debian OS' do

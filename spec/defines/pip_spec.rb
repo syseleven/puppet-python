@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'python::pip', type: :define do # rubocop:disable RSpec/MultipleDescribes
+describe 'python_deprecated::pip', type: :define do # rubocop:disable RSpec/MultipleDescribes
   let(:title) { 'rpyc' }
 
   context 'on Debian OS' do
@@ -87,7 +87,7 @@ describe 'python::pip', type: :define do # rubocop:disable RSpec/MultipleDescrib
     describe 'path as' do
       context 'adds anaconda path to pip invocation if provider is anaconda' do
         let(:params) { {} }
-        let(:pre_condition) { 'class {"python": provider => "anaconda", anaconda_install_path => "/opt/python3"}' }
+        let(:pre_condition) { 'class {"python_deprecated": provider => "anaconda", anaconda_install_path => "/opt/python3"}' }
 
         it { is_expected.to contain_exec('pip_install_rpyc').with_path(['/opt/python3/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin']) }
       end
@@ -119,7 +119,7 @@ describe 'python::pip', type: :define do # rubocop:disable RSpec/MultipleDescrib
   end
 end
 
-describe 'python::pip', type: :define do
+describe 'python_deprecated::pip', type: :define do
   let(:title) { 'requests' }
 
   context 'on Debian OS' do

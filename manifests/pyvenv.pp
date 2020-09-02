@@ -12,7 +12,7 @@
 # @param environment Optionally specify environment variables for pyvenv
 #
 # @example
-#   python::pyvenv { '/var/www/project1' :
+#   python_deprecated::pyvenv { '/var/www/project1' :
 #     ensure       => present,
 #     version      => 'system',
 #     systempkgs   => true,
@@ -21,7 +21,7 @@
 #     group        => 'apps',
 #   }
 #
-define python::pyvenv (
+define python_deprecated::pyvenv (
   $ensure           = present,
   $version          = 'system',
   $systempkgs       = false,
@@ -33,11 +33,11 @@ define python::pyvenv (
   $environment      = [],
 ) {
 
-  include python
+  include python_deprecated
 
   if $ensure == 'present' {
     $python_version = $version ? {
-        'system' => $facts['python3_version'],
+        'system' => $facts['python_deprecated_python3_version'],
         default  => $version,
     }
 
@@ -60,13 +60,13 @@ define python::pyvenv (
 
     # pyvenv is deprecated since 3.6 and will be removed in 3.8
     if (versioncmp($normalized_python_version, '3.6') >=0) {
-      $virtualenv_cmd = "${python::exec_prefix}python${normalized_python_version} -m venv"
+      $virtualenv_cmd = "${python_deprecated::exec_prefix}python${normalized_python_version} -m venv"
     } else {
-      $virtualenv_cmd = "${python::exec_prefix}pyvenv-${normalized_python_version}"
+      $virtualenv_cmd = "${python_deprecated::exec_prefix}pyvenv-${normalized_python_version}"
     }
 
-    $_path = $python::provider ? {
-      'anaconda' => concat(["${python::anaconda_install_path}/bin"], $path),
+    $_path = $python_deprecated::provider ? {
+      'anaconda' => concat(["${python_deprecated::anaconda_install_path}/bin"], $path),
       default    => $path,
     }
 

@@ -18,14 +18,14 @@
 # @param timeout The maximum time in seconds the "pip install" command should take.
 #
 # @example install pip requirements from /var/www/project1/requirements.txt
-#   python::requirements { '/var/www/project1/requirements.txt' :
+#   python_deprecated::requirements { '/var/www/project1/requirements.txt' :
 #     virtualenv => '/var/www/project1',
 #     proxy      => 'http://proxy.domain.com:3128',
 #     owner      => 'appuser',
 #     group      => 'apps',
 #   }
 #
-define python::requirements (
+define python_deprecated::requirements (
   $requirements                       = $name,
   $virtualenv                         = 'system',
   Enum['pip', 'pip3'] $pip_provider   = 'pip',
@@ -43,10 +43,10 @@ define python::requirements (
   $timeout                            = 1800,
 ) {
 
-  include python
+  include python_deprecated
 
   if $virtualenv == 'system' and ($owner != 'root' or $group != 'root') {
-    fail('python::pip: root user must be used when virtualenv is system')
+    fail('python_deprecated::pip: root user must be used when virtualenv is system')
   }
 
   if $fix_requirements_owner {
@@ -63,8 +63,8 @@ define python::requirements (
   }
 
   $pip_env = $virtualenv ? {
-    'system' => "${python::exec_prefix} ${pip_provider}",
-    default  => "${python::exec_prefix} ${virtualenv}/bin/${pip_provider}",
+    'system' => "${python_deprecated::exec_prefix} ${pip_provider}",
+    default  => "${python_deprecated::exec_prefix} ${virtualenv}/bin/${pip_provider}",
   }
 
   $proxy_flag = $proxy ? {
@@ -77,7 +77,7 @@ define python::requirements (
     default => "--src=${src}",
   }
 
-  # This will ensure multiple python::virtualenv definitions can share the
+  # This will ensure multiple python_deprecated::virtualenv definitions can share the
   # the same requirements file.
   if !defined(File[$requirements]) and $manage_requirements == true {
     file { $requirements:

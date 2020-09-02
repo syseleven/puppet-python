@@ -3,7 +3,7 @@
 #
 # The python Module default configuration settings.
 #
-class python::params {
+class python_deprecated::params {
   $ensure                 = 'present'
   $version                = 'system'
   $pip                    = 'present'

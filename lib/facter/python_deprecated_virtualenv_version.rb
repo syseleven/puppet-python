@@ -1,6 +1,10 @@
 # Make virtualenv version available as a fact
 
-Facter.add('virtualenv_version') do
+Facter.add('python_deprecated_virtualenv_version') do
+  confine :os do |os|
+    os['release']['full'] != '20.04'
+  end
+
   setcode do
     if Facter::Util::Resolution.which('virtualenv')
       Facter::Util::Resolution.exec('virtualenv --version 2>&1').match(%r{^(\d+\.\d+\.?\d*).*$})[0]

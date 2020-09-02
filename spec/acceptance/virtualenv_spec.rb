@@ -10,14 +10,14 @@ describe 'python class' do
         pip        => 'present',
         virtualenv => 'present',
       }
-      -> python::virtualenv { 'venv' :
+      -> python_deprecated::virtualenv { 'venv' :
         ensure     => 'present',
         systempkgs => false,
         venv_dir   => '/opt/venv',
         owner      => 'root',
         group      => 'root',
       }
-      -> python::pip { 'rpyc' :
+      -> python_deprecated::pip { 'rpyc' :
         ensure     => '3.2.3',
         virtualenv => '/opt/venv',
       }
@@ -35,14 +35,14 @@ describe 'python class' do
         pip        => 'present',
         virtualenv => 'present',
       }
-      -> python::virtualenv { 'venv' :
+      -> python_deprecated::virtualenv { 'venv' :
         ensure     => 'present',
         systempkgs => false,
         venv_dir   => '/opt/venv2',
         owner      => 'root',
         group      => 'root',
       }
-      -> python::pip { 'pip' :
+      -> python_deprecated::pip { 'pip' :
         ensure     => '18.0',
         virtualenv => '/opt/venv2',
       }
@@ -60,14 +60,14 @@ describe 'python class' do
         pip        => 'present',
         virtualenv => 'present',
       }
-      -> python::virtualenv { 'venv' :
+      -> python_deprecated::virtualenv { 'venv' :
         ensure     => 'present',
         systempkgs => false,
         venv_dir   => '/opt/venv3',
         owner      => 'root',
         group      => 'root',
       }
-      -> python::pip { 'rpyc' :
+      -> python_deprecated::pip { 'rpyc' :
         ensure     => 'latest',
         virtualenv => '/opt/venv3',
       }
@@ -87,14 +87,14 @@ describe 'python class' do
         pip        => 'present',
         virtualenv => 'present',
       }
-      -> python::virtualenv { 'venv' :
+      -> python_deprecated::virtualenv { 'venv' :
         ensure     => 'present',
         systempkgs => false,
         venv_dir   => '/opt/venv4',
         owner      => 'root',
         group      => 'root',
       }
-      -> python::pip { 'int_date' :
+      -> python_deprecated::pip { 'int_date' :
         ensure     => 'latest',
         virtualenv => '/opt/venv4',
       }
@@ -117,14 +117,14 @@ describe 'python class' do
         pip        => 'present',
         virtualenv => 'present',
       }
-      -> python::virtualenv { 'venv' :
+      -> python_deprecated::virtualenv { 'venv' :
         ensure     => 'present',
         systempkgs => false,
         venv_dir   => '/opt/venv5',
         owner      => 'root',
         group      => 'root',
       }
-      -> python::pip { 'rpyc' :
+      -> python_deprecated::pip { 'rpyc' :
         ensure     => '4.1.0',
         url        => 'git+https://github.com/tomerfiliba/rpyc.git',
         editable   => true,
@@ -144,14 +144,14 @@ describe 'python class' do
         pip        => 'present',
         virtualenv => 'present',
       }
-      -> python::virtualenv { 'venv' :
+      -> python_deprecated::virtualenv { 'venv' :
         ensure     => 'present',
         systempkgs => false,
         venv_dir   => '/opt/venv6',
         owner      => 'root',
         group      => 'root',
       }
-      -> python::pip { 'rpyc==4.1.0' :
+      -> python_deprecated::pip { 'rpyc==4.1.0' :
         virtualenv => '/opt/venv6',
       }
       EOS

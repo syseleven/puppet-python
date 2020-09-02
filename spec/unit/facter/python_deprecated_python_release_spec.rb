@@ -16,13 +16,13 @@ Python 3.3.0
 EOS
   end
 
-  describe 'python_version' do
-    context 'returns Python version when `python` present' do
+  describe 'python_deprecated_python_release' do
+    context 'returns Python release when `python` present' do
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('python').returns(true)
         Facter::Util::Resolution.expects(:exec).with('python -V 2>&1').returns(python2_version_output)
-        expect(Facter.value(:python_version)).to eq('2.7.9')
+        expect(Facter.value(:python_deprecated_python_release)).to eq('2.7')
       end
     end
 
@@ -30,29 +30,29 @@ EOS
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('python').returns(false)
-        expect(Facter.value(:python_version)).to eq(nil)
+        expect(Facter.value(:python_deprecated_python_release)).to eq(nil)
       end
     end
   end
 
-  describe 'python2_version' do
-    context 'returns Python 2 version when `python` is present and Python 2' do
+  describe 'python_deprecated_python2_release' do
+    context 'returns Python 2 release when `python` is present and Python 2' do
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('python').returns(true)
         Facter::Util::Resolution.expects(:exec).with('python -V 2>&1').returns(python2_version_output)
-        expect(Facter.value(:python2_version)).to eq('2.7.9')
+        expect(Facter.value(:python_deprecated_python2_release)).to eq('2.7')
       end
     end
 
-    context 'returns Python 2 version when `python` is Python 3 and `python2` is present' do
+    context 'returns Python 2 release when `python` is Python 3 and `python2` is present' do
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('python').returns(true)
         Facter::Util::Resolution.expects(:exec).with('python -V 2>&1').returns(python3_version_output)
         Facter::Util::Resolution.expects(:which).with('python2').returns(true)
         Facter::Util::Resolution.expects(:exec).with('python2 -V 2>&1').returns(python2_version_output)
-        expect(Facter.value(:python2_version)).to eq('2.7.9')
+        expect(Facter.value(:python_deprecated_python2_release)).to eq('2.7')
       end
     end
 
@@ -62,7 +62,7 @@ EOS
         Facter::Util::Resolution.expects(:which).with('python').returns(true)
         Facter::Util::Resolution.expects(:exec).with('python -V 2>&1').returns(python3_version_output)
         Facter::Util::Resolution.expects(:which).with('python2').returns(false)
-        expect(Facter.value(:python2_version)).to eq(nil)
+        expect(Facter.value(:python_deprecated_python2_release)).to eq(nil)
       end
     end
 
@@ -71,18 +71,18 @@ EOS
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('python').returns(false)
         Facter::Util::Resolution.expects(:which).with('python2').returns(false)
-        expect(Facter.value(:python2_version)).to eq(nil)
+        expect(Facter.value(:python_deprecated_python2_release)).to eq(nil)
       end
     end
   end
 
-  describe 'python3_version' do
-    context 'returns Python 3 version when `python3` present' do
+  describe 'python_deprecated_python3_release' do
+    context 'returns Python 3 release when `python3` present' do
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('python3').returns(true)
         Facter::Util::Resolution.expects(:exec).with('python3 -V 2>&1').returns(python3_version_output)
-        expect(Facter.value(:python3_version)).to eq('3.3.0')
+        expect(Facter.value(:python_deprecated_python3_release)).to eq('3.3')
       end
     end
 
@@ -90,7 +90,7 @@ EOS
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('python3').returns(false)
-        expect(Facter.value(:python3_version)).to eq(nil)
+        expect(Facter.value(:python_deprecated_python3_release)).to eq(nil)
       end
     end
   end

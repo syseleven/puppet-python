@@ -21,13 +21,13 @@
 # @param umask
 #
 # @example Install Flask to /var/www/project1 using a proxy
-#   python::pip { 'flask':
+#   python_deprecated::pip { 'flask':
 #     virtualenv => '/var/www/project1',
 #     proxy      => 'http://proxy.domain.com:3128',
 #     index      => 'http://www.example.com/simple/',
 #   }
 # @example Install cx_Oracle with pip
-#   python::pip { 'cx_Oracle' :
+#   python_deprecated::pip { 'cx_Oracle' :
 #     pkgname       => 'cx_Oracle',
 #     ensure        => '5.1.2',
 #     virtualenv    => '/var/www/project1',
@@ -38,7 +38,7 @@
 #     timeout       => 1800,
 #   }
 # @example Install Requests with pip3
-#   python::pip { 'requests' :
+#   python_deprecated::pip { 'requests' :
 #     ensure        => 'present',
 #     pkgname       => 'requests',
 #     pip_provider  => 'pip3',
@@ -47,14 +47,14 @@
 #     timeout       => 1800
 #   }
 #
-define python::pip (
+define python_deprecated::pip (
   String $pkgname                                            = $name,
   Variant[Enum[present, absent, latest], String[1]] $ensure  = present,
   Variant[Enum['system'], Stdlib::Absolutepath] $virtualenv  = 'system',
   String[1] $pip_provider                                    = 'pip',
   Variant[Boolean, String] $url                              = false,
   String[1] $owner                                           = 'root',
-  $group                                                     = getvar('python::params::group'),
+  $group                                                     = getvar('python_deprecated::params::group'),
   $umask                                                     = undef,
   $index                                                     = false,
   Optional[Stdlib::HTTPUrl] $proxy                           = undef,
@@ -68,12 +68,12 @@ define python::pip (
   String[1] $log_dir                                         = '/tmp',
   Array[String] $path                                        = ['/usr/local/bin','/usr/bin','/bin', '/usr/sbin'],
 ){
-  $python_provider = getparam(Class['python'], 'provider')
-  $python_version  = getparam(Class['python'], 'version')
+  $python_provider = getparam(Class['python_deprecated'], 'provider')
+  $python_version  = getparam(Class['python_deprecated'], 'version')
 
   if $virtualenv != 'system' {
-    Python::Pyvenv <| |> -> Python::Pip[$name]
-    Python::Virtualenv <| |> -> Python::Pip[$name]
+    Python_deprecated::Pyvenv <| |> -> Python_deprecated::Pip[$name]
+    Python_deprecated::Virtualenv <| |> -> Python_deprecated::Pip[$name]
   }
 
   # Get SCL exec prefix
@@ -85,13 +85,13 @@ define python::pip (
   }
 
   $_path = $python_provider ? {
-    'anaconda' => concat(["${python::anaconda_install_path}/bin"], $path),
+    'anaconda' => concat(["${python_deprecated::anaconda_install_path}/bin"], $path),
     default    => $path,
   }
 
   # Parameter validation
   if $virtualenv == 'system' and $owner != 'root' {
-    fail('python::pip: root user must be used when virtualenv is system')
+    fail('python_deprecated::pip: root user must be used when virtualenv is system')
   }
 
   $cwd = $virtualenv ? {
@@ -128,11 +128,11 @@ define python::pip (
 
   #TODO: Do more robust argument checking, but below is a start
   if ($ensure == absent) and ($install_args != '') {
-    fail('python::pip cannot provide install_args with ensure => absent')
+    fail('python_deprecated::pip cannot provide install_args with ensure => absent')
   }
 
   if ($ensure == present) and ($uninstall_args != '') {
-    fail('python::pip cannot provide uninstall_args with ensure => present')
+    fail('python_deprecated::pip cannot provide uninstall_args with ensure => present')
   }
 
   if $pkgname =~ /==/ {

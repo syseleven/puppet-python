@@ -21,7 +21,7 @@
 # @param extra_pip_args Extra arguments to pass to pip after requirements file
 #
 # @example install a virtual env at /var/www/project1
-#  python::virtualenv { '/var/www/project1':
+#  python_deprecated::virtualenv { '/var/www/project1':
 #    ensure       => present,
 #    version      => 'system',
 #    requirements => '/var/www/project1/requirements.txt',
@@ -30,7 +30,7 @@
 #    index        => 'http://www.example.com/simple/',
 #  }
 #
-define python::virtualenv (
+define python_deprecated::virtualenv (
   $ensure                          = 'present',
   $version                         = 'system',
   $requirements                    = false,
@@ -51,7 +51,7 @@ define python::virtualenv (
   $extra_pip_args                  = '',
   $virtualenv                      = undef,
 ) {
-  include python
+  include python_deprecated
   $python_provider = getparam(Class['python'], 'provider')
   $anaconda_path = getparam(Class['python'], 'anaconda_install_path')
 
@@ -90,8 +90,8 @@ define python::virtualenv (
     # --system-site-packages flag, default off for prior versions
     # Prior to version 1.7 the default was equal to --system-site-packages
     # and the flag --no-site-packages had to be passed to do the opposite
-    $_virtualenv_version = getvar('virtualenv_version') ? {
-      /.*/ => getvar('virtualenv_version'),
+    $_virtualenv_version = getvar('python_deprecated_virtualenv_version') ? {
+      /.*/ => getvar('python_deprecated_virtualenv_version'),
       default => '',
     }
     if (( versioncmp($_virtualenv_version,'1.7') > 0 ) and ( $systempkgs == true )) {
@@ -131,9 +131,9 @@ define python::virtualenv (
       }
     }
 
-    $virtualenv_cmd = "${python::exec_prefix}${used_virtualenv}"
+    $virtualenv_cmd = "${python_deprecated::exec_prefix}${used_virtualenv}"
 
-    $pip_cmd   = "${python::exec_prefix}${venv_dir}/bin/pip"
+    $pip_cmd   = "${python_deprecated::exec_prefix}${venv_dir}/bin/pip"
     $pip_flags = "${pypi_index} ${proxy_flag} ${pip_args}"
 
     exec { "python_virtualenv_${venv_dir}":
@@ -158,7 +158,7 @@ define python::virtualenv (
         cwd         => $cwd,
       }
 
-      python::requirements { "${requirements}_${venv_dir}":
+      python_deprecated::requirements { "${requirements}_${venv_dir}":
         requirements   => $requirements,
         virtualenv     => $venv_dir,
         proxy          => $proxy,

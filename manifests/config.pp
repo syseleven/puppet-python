@@ -2,21 +2,21 @@
 # @summary Optionally installs the gunicorn service
 #
 # @example
-#  include python::config
+#  include python_deprecated::config
 #
-class python::config {
+class python_deprecated::config {
 
-  Class['python::install'] -> Python::Pip <| |>
-  Class['python::install'] -> Python::Requirements <| |>
-  Class['python::install'] -> Python::Virtualenv <| |>
+  Class['python_deprecated::install'] -> Python_deprecated::Pip <| |>
+  Class['python_deprecated::install'] -> Python_deprecated::Requirements <| |>
+  Class['python_deprecated::install'] -> Python_deprecated::Virtualenv <| |>
 
-  Python::Virtualenv <| |> -> Python::Pip <| |>
+  Python_deprecated::Virtualenv <| |> -> Python_deprecated::Pip <| |>
 
-  if $python::manage_gunicorn {
-    if $python::gunicorn != 'absent' {
-      Class['python::install'] -> Python::Gunicorn <| |>
+  if $python_deprecated::manage_gunicorn {
+    if $python_deprecated::gunicorn != 'absent' {
+      Class['python_deprecated::install'] -> Python_deprecated::Gunicorn <| |>
 
-      Python::Gunicorn <| |> ~> Service['gunicorn']
+      Python_deprecated::Gunicorn <| |> ~> Service['gunicorn']
 
       service { 'gunicorn':
         ensure     => running,

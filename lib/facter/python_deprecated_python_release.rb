@@ -7,13 +7,13 @@ def get_python_release(executable)
   end
 end
 
-Facter.add('python_release') do
+Facter.add('python_deprecated_python_release') do
   setcode do
     get_python_release 'python'
   end
 end
 
-Facter.add('python2_release') do
+Facter.add('python_deprecated_python2_release') do
   setcode do
     default_release = get_python_release 'python'
     if default_release.nil? || !default_release.start_with?('2')
@@ -24,7 +24,7 @@ Facter.add('python2_release') do
   end
 end
 
-Facter.add('python3_release') do
+Facter.add('python_deprecated_python3_release') do
   setcode do
     get_python_release 'python3'
   end

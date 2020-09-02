@@ -1,5 +1,5 @@
 {
-  "name": "puppet-python",
+  "name": "puppet-python_deprecated",
   "version": "3.0.2-rc0",
   "author": "Vox Pupuli",
   "summary": "Python Module",
@@ -9,7 +9,7 @@
   "issues_url": "https://github.com/voxpupuli/puppet-python/issues",
   "description": "Puppet module for Python",
   "tags": [
-    "python",
+    "python_deprecated",
     "pip",
     "virtualenv",
     "gunicorn"

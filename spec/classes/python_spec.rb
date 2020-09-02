@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'python', type: :class do
+describe 'python_deprecated', type: :class do
   on_supported_os.each do |os, facts|
     context "on #{os} " do
       let :facts do
@@ -12,7 +12,7 @@ describe 'python', type: :class do
 
         # tests were written for Debian 6
         context 'on Debian OS' do
-          it { is_expected.to contain_class('python::install') }
+          it { is_expected.to contain_class('python_deprecated::install') }
           # Base debian packages.
           it { is_expected.to contain_package('python') }
           it { is_expected.to contain_package('python-dev') }
@@ -20,7 +20,7 @@ describe 'python', type: :class do
           # Basic python packages (from pip)
           it { is_expected.to contain_package('virtualenv') }
 
-          describe 'with python::dev' do
+          describe 'with python_deprecated::dev' do
             context 'true' do
               let(:params) { { dev: 'present' } }
 
@@ -31,7 +31,7 @@ describe 'python', type: :class do
             end
           end
 
-          describe 'with python::virtualenv, without python::dev' do
+          describe 'with python_deprecated::virtualenv, without python_deprecated::dev' do
             context 'true' do
               let(:params) { { dev: 'absent', virtualenv: 'present' } }
 
@@ -42,7 +42,7 @@ describe 'python', type: :class do
             end
           end
 
-          describe 'with python::python_virtualenvs' do
+          describe 'with python_deprecated::python_virtualenvs' do
             context 'when `proxy` set' do
               let(:params) do
                 {
@@ -89,7 +89,7 @@ describe 'python', type: :class do
             end
           end
 
-          describe 'with python::provider' do
+          describe 'with python_deprecated::provider' do
             context 'pip' do
               let(:params) { { pip: 'present', provider: 'pip' } }
 
@@ -105,14 +105,14 @@ describe 'python', type: :class do
               }
             end
 
-            # python::provider
+            # python_deprecated::provider
             context 'default' do
               let(:params) { { provider: '' } }
 
               it { is_expected.to contain_package('virtualenv') }
               it { is_expected.to contain_package('pip') }
 
-              describe 'with python::virtualenv' do
+              describe 'with python_deprecated::virtualenv' do
                 context 'true' do
                   let(:params) { { provider: '', virtualenv: 'present' } }
 
@@ -120,7 +120,7 @@ describe 'python', type: :class do
                 end
               end
 
-              describe 'without python::virtualenv' do
+              describe 'without python_deprecated::virtualenv' do
                 context 'default/empty' do
                   let(:params) { { provider: '' } }
 
@@ -130,7 +130,7 @@ describe 'python', type: :class do
             end
           end
 
-          describe 'with python::dev' do
+          describe 'with python_deprecated::dev' do
             context 'true' do
               let(:params) { { dev: 'present' } }
 
@@ -164,7 +164,7 @@ describe 'python', type: :class do
           when '5'
             # written for RHEL 5
             context 'on a Redhat OS' do
-              it { is_expected.to contain_class('python::install') }
+              it { is_expected.to contain_class('python_deprecated::install') }
               # Base debian packages.
               it { is_expected.to contain_package('python') }
               it { is_expected.to contain_package('python-dev').with_name('python-devel') }
@@ -180,7 +180,7 @@ describe 'python', type: :class do
                 end
               end
 
-              describe 'with python::dev' do
+              describe 'with python_deprecated::dev' do
                 context 'true' do
                   let(:params) { { dev: 'present' } }
 
@@ -208,7 +208,7 @@ describe 'python', type: :class do
                 end
               end
 
-              describe 'with python::provider' do
+              describe 'with python_deprecated::provider' do
                 context 'pip' do
                   let(:params) { { provider: 'pip' } }
 
@@ -234,14 +234,14 @@ describe 'python', type: :class do
                   }
                 end
 
-                # python::provider
+                # python_deprecated::provider
                 context 'default' do
                   let(:params) { { provider: '' } }
 
                   it { is_expected.to contain_package('virtualenv') }
                   it { is_expected.to contain_package('pip') }
 
-                  describe 'with python::virtualenv' do
+                  describe 'with python_deprecated::virtualenv' do
                     context 'true' do
                       let(:params) { { provider: '', virtualenv: 'present' } }
 
@@ -249,7 +249,7 @@ describe 'python', type: :class do
                     end
                   end
 
-                  describe 'with python::virtualenv' do
+                  describe 'with python_deprecated::virtualenv' do
                     context 'default/empty' do
                       let(:params) { { provider: '' } }
 
@@ -259,7 +259,7 @@ describe 'python', type: :class do
                 end
               end
 
-              describe 'with python::dev' do
+              describe 'with python_deprecated::dev' do
                 context 'true' do
                   let(:params) { { dev: 'present' } }
 
@@ -273,10 +273,10 @@ describe 'python', type: :class do
           when '6'
 
             context 'on a Redhat 6 OS' do
-              it { is_expected.to contain_class('python::install') }
+              it { is_expected.to contain_class('python_deprecated::install') }
               it { is_expected.to contain_package('pip').with_name('python-pip') }
 
-              describe 'with python::provider' do
+              describe 'with python_deprecated::provider' do
                 context 'scl' do
                   describe 'with version' do
                     context '3.6 SCL meta package' do
@@ -311,10 +311,10 @@ describe 'python', type: :class do
           when '7'
 
             context 'on a Redhat 7 OS' do
-              it { is_expected.to contain_class('python::install') }
+              it { is_expected.to contain_class('python_deprecated::install') }
               it { is_expected.to contain_package('pip').with_name('python2-pip') }
 
-              describe 'with python::version' do
+              describe 'with python_deprecated::version' do
                 context 'python36' do
                   let(:params) { { version: 'python36' } }
 
@@ -325,7 +325,7 @@ describe 'python', type: :class do
                   it { is_expected.to contain_package('virtualenv').with_name('python36-virtualenv') }
                 end
               end
-              describe 'with python::provider' do
+              describe 'with python_deprecated::provider' do
                 context 'scl' do
                   describe 'with version' do
                     context '3.6 SCL meta package' do
@@ -362,7 +362,7 @@ describe 'python', type: :class do
         # written for SLES 11 SP3
 
         context 'on a SLES 11 SP3' do
-          it { is_expected.to contain_class('python::install') }
+          it { is_expected.to contain_class('python_deprecated::install') }
           # Base Suse packages.
           it { is_expected.to contain_package('python') }
           it { is_expected.to contain_package('python-dev').with_name('python-devel') }
@@ -371,7 +371,7 @@ describe 'python', type: :class do
           # Basic python packages (from pip)
           it { is_expected.to contain_package('virtualenv') }
 
-          describe 'with python::dev' do
+          describe 'with python_deprecated::dev' do
             context 'true' do
               let(:params) { { dev: 'present' } }
 
@@ -399,7 +399,7 @@ describe 'python', type: :class do
             end
           end
 
-          describe 'with python::provider' do
+          describe 'with python_deprecated::provider' do
             context 'pip' do
               let(:params) { { provider: 'pip' } }
 
@@ -415,14 +415,14 @@ describe 'python', type: :class do
               }
             end
 
-            # python::provider
+            # python_deprecated::provider
             context 'default' do
               let(:params) { { provider: '' } }
 
               it { is_expected.to contain_package('virtualenv') }
               it { is_expected.to contain_package('pip') }
 
-              describe 'with python::virtualenv' do
+              describe 'with python_deprecated::virtualenv' do
                 context 'true' do
                   let(:params) { { provider: '', virtualenv: 'present' } }
 
@@ -430,7 +430,7 @@ describe 'python', type: :class do
                 end
               end
 
-              describe 'with python::virtualenv' do
+              describe 'with python_deprecated::virtualenv' do
                 context 'default/empty' do
                   let(:params) { { provider: '' } }
 
@@ -440,7 +440,7 @@ describe 'python', type: :class do
             end
           end
 
-          describe 'with python::dev' do
+          describe 'with python_deprecated::dev' do
             context 'true' do
               let(:params) { { dev: 'present' } }
 
@@ -460,13 +460,13 @@ describe 'python', type: :class do
       when 'Gentoo'
 
         context 'on a Gentoo OS' do
-          it { is_expected.to contain_class('python::install') }
+          it { is_expected.to contain_class('python_deprecated::install') }
           # Base debian packages.
           it { is_expected.to contain_package('python') }
           it { is_expected.to contain_package('pip').with('category' => 'dev-python') }
           # Basic python packages (from pip)
           it { is_expected.to contain_package('virtualenv') }
-          # Python::Dev
+          # Python_deprecated::Dev
           it { is_expected.not_to contain_package('python-dev') }
 
           describe 'with manage_gunicorn' do
@@ -486,7 +486,7 @@ describe 'python', type: :class do
             end
           end
 
-          describe 'with python::provider' do
+          describe 'with python_deprecated::provider' do
             context 'pip' do
               let(:params) { { pip: 'present', provider: 'pip' } }
 
@@ -502,14 +502,14 @@ describe 'python', type: :class do
               }
             end
 
-            # python::provider
+            # python_deprecated::provider
             context 'default' do
               let(:params) { { provider: '' } }
 
               it { is_expected.to contain_package('virtualenv') }
               it { is_expected.to contain_package('pip') }
 
-              describe 'with python::virtualenv' do
+              describe 'with python_deprecated::virtualenv' do
                 context 'true' do
                   let(:params) { { provider: '', virtualenv: 'present' } }
 
@@ -517,7 +517,7 @@ describe 'python', type: :class do
                 end
               end
 
-              describe 'with python::virtualenv' do
+              describe 'with python_deprecated::virtualenv' do
                 context 'default/empty' do
                   let(:params) { { provider: '' } }
 

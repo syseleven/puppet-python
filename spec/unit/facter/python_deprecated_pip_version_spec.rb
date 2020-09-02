@@ -11,13 +11,13 @@ pip 6.0.6 from /opt/boxen/homebrew/Cellar/python/2.7.9/Frameworks/Python.framewo
 EOS
   end
 
-  describe 'pip_version' do
+  describe 'python_deprecated_pip_version' do
     context 'returns pip version when pip present' do
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('pip').returns(true)
         Facter::Util::Resolution.expects(:exec).with('pip --version 2>&1').returns(pip_version_output)
-        expect(Facter.value(:pip_version)).to eq('6.0.6')
+        expect(Facter.value(:python_deprecated_pip_version)).to eq('6.0.6')
       end
     end
 
@@ -25,7 +25,7 @@ EOS
       it do
         Facter::Util::Resolution.stubs(:exec)
         Facter::Util::Resolution.expects(:which).with('pip').returns(false)
-        expect(Facter.value(:pip_version)).to eq(nil)
+        expect(Facter.value(:python_deprecated_pip_version)).to eq(nil)
       end
     end
   end

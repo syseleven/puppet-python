@@ -5,17 +5,17 @@
 # @param manage_python if python module will manage deps
 # @param http_proxy Proxy server to use for outbound connections.
 #
-# @example 
-#   class { 'python::pip::bootstrap':
+# @example
+#   class { 'python_deprecated::pip::bootstrap':
 #     version => 'pip',
 #   }
-class python::pip::bootstrap (
+class python_deprecated::pip::bootstrap (
   Enum['pip', 'pip3'] $version            = 'pip',
   Variant[Boolean, String] $manage_python = false,
   Optional[Stdlib::HTTPUrl] $http_proxy   = undef,
-) inherits python::params {
+) inherits python_deprecated::params {
   if $manage_python {
-    include python
+    include python_deprecated
   } else {
     $target_src_pip_path = $facts['os']['family'] ? {
       'AIX' => '/opt/freeware/bin',
@@ -35,14 +35,14 @@ class python::pip::bootstrap (
         command     => '/usr/bin/curl https://bootstrap.pypa.io/get-pip.py | python3',
         environment => $environ,
         unless      => 'which pip3',
-        path        => $python::params::pip_lookup_path,
+        path        => $python_deprecated::params::pip_lookup_path,
         require     => Package['python3'],
       }
       # puppet is opinionated about the pip command name
       file { 'pip3-python':
         ensure  => link,
         path    => '/usr/bin/pip3',
-        target  => "${target_src_pip_path}/pip${facts['python3_release']}",
+        target  => "${target_src_pip_path}/pip${facts['python_deprecated_python3_release']}",
         require => Exec['bootstrap pip3'],
       }
     } else {
@@ -50,14 +50,14 @@ class python::pip::bootstrap (
         command     => '/usr/bin/curl https://bootstrap.pypa.io/get-pip.py | python',
         environment => $environ,
         unless      => 'which pip',
-        path        => $python::params::pip_lookup_path,
+        path        => $python_deprecated::params::pip_lookup_path,
         require     => Package['python'],
       }
       # puppet is opinionated about the pip command name
       file { 'pip-python':
         ensure  => link,
         path    => '/usr/bin/pip',
-        target  => "${target_src_pip_path}/pip${facts['python2_release']}",
+        target  => "${target_src_pip_path}/pip${facts['python_deprecated_python2_release']}",
         require => Exec['bootstrap pip'],
       }
     }

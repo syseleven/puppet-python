@@ -2,16 +2,16 @@
 # @summary Installs core python packages
 #
 # @example
-#  include python::install
+#  include python_deprecated::install
 #
-class python::install {
+class python_deprecated::install {
 
-  $python = $python::version ? {
+  $python = $python_deprecated::version ? {
     'system'              => 'python',
     'pypy'                => 'pypy',
     /\A(python)?([0-9]+)/ => "python${2}",
-    /\Arh-python[0-9]{2}/ => $python::version,
-    default               => "python${python::version}",
+    /\Arh-python[0-9]{2}/ => $python_deprecated::version,
+    default               => "python${python_deprecated::version}",
   }
 
   $pythondev = $facts['os']['family'] ? {
@@ -22,35 +22,35 @@ class python::install {
     'Gentoo' => undef,
   }
 
-  $pip_ensure = $python::pip ? {
+  $pip_ensure = $python_deprecated::pip ? {
     true    => 'present',
     false   => 'absent',
-    default => $python::pip,
+    default => $python_deprecated::pip,
   }
 
-  $venv_ensure = $python::virtualenv ? {
+  $venv_ensure = $python_deprecated::virtualenv ? {
     true    => 'present',
     false   => 'absent',
-    default => $python::virtualenv,
+    default => $python_deprecated::virtualenv,
   }
 
   if $venv_ensure == 'present' {
     $dev_ensure = 'present'
-    unless $python::dev {
+    unless $python_deprecated::dev {
       # Error: python2-devel is needed by (installed) python-virtualenv-15.1.0-2.el7.noarch
       # Python dev is required for virtual environment, but python environment is not required for python dev.
       notify { 'Python virtual environment is dependent on python dev': }
     }
   } else {
-    $dev_ensure = $python::dev ? {
+    $dev_ensure = $python_deprecated::dev ? {
       true    => 'present',
       false   => 'absent',
-      default => $python::dev,
+      default => $python_deprecated::dev,
     }
   }
 
   package { 'python':
-    ensure => $python::ensure,
+    ensure => $python_deprecated::ensure,
     name   => $python,
   }
 
@@ -60,7 +60,7 @@ class python::install {
     require => Package['python'],
   }
 
-  case $python::provider {
+  case $python_deprecated::provider {
     'pip': {
 
       package { 'pip':
@@ -78,7 +78,7 @@ class python::install {
       # Respect the $pip_ensure setting
       unless $pip_ensure == 'absent' {
         # Install pip without pip, see https://pip.pypa.io/en/stable/installing/.
-        include 'python::pip::bootstrap'
+        include 'python_deprecated::pip::bootstrap'
 
         Exec['bootstrap pip'] -> File['pip-python'] -> Package <| provider == pip |>
 
@@ -104,7 +104,7 @@ class python::install {
       # SCL is only valid in the RedHat family. If RHEL, package must be
       # enabled using the subscription manager outside of puppet. If CentOS,
       # the centos-release-SCL will install the repository.
-      if $python::manage_scl {
+      if $python_deprecated::manage_scl {
         $install_scl_repo_package = $facts['os']['name'] ? {
           'CentOS' => 'present',
           default  => 'absent',
@@ -127,7 +127,7 @@ class python::install {
       }
 
       # This gets installed as a dependency anyway
-      # package { "${python::version}-python-virtualenv":
+      # package { "${python_deprecated::version}-python-virtualenv":
       #   ensure  => $venv_ensure,
       #   require => Package['scl-utils'],
       # }
@@ -136,18 +136,18 @@ class python::install {
       }
       if $pip_ensure != 'absent' {
         exec { 'python-scl-pip-install':
-          command => "${python::exec_prefix}easy_install pip",
+          command => "${python_deprecated::exec_prefix}easy_install pip",
           path    => ['/usr/bin', '/bin'],
-          creates => "/opt/rh/${python::version}/root/usr/bin/pip",
+          creates => "/opt/rh/${python_deprecated::version}/root/usr/bin/pip",
         }
       }
     }
     'rhscl': {
       # rhscl is RedHat SCLs from softwarecollections.org
-      if $python::rhscl_use_public_repository {
-        $scl_package = "rhscl-${python::version}-epel-${::operatingsystemmajrelease}-${::architecture}"
+      if $python_deprecated::rhscl_use_public_repository {
+        $scl_package = "rhscl-${python_deprecated::version}-epel-${::operatingsystemmajrelease}-${::architecture}"
         package { $scl_package:
-          source   => "https://www.softwarecollections.org/en/scls/rhscl/${python::version}/epel-${::operatingsystemmajrelease}-${::architecture}/download/${scl_package}.noarch.rpm",
+          source   => "https://www.softwarecollections.org/en/scls/rhscl/${python_deprecated::version}/epel-${::operatingsystemmajrelease}-${::architecture}/download/${scl_package}.noarch.rpm",
           provider => 'rpm',
           tag      => 'python-scl-repo',
         }
@@ -171,7 +171,7 @@ class python::install {
         tag    => 'python-pip-package',
       }
 
-      if $python::rhscl_use_public_repository {
+      if $python_deprecated::rhscl_use_public_repository {
         Package <| tag == 'python-scl-repo' |>
         -> Package <| tag == 'python-scl-package' |>
       }
@@ -183,24 +183,24 @@ class python::install {
       $installer_path = '/var/tmp/anaconda_installer.sh'
 
       file { $installer_path:
-        source => $python::anaconda_installer_url,
+        source => $python_deprecated::anaconda_installer_url,
         mode   => '0700',
       }
       -> exec { 'install_anaconda_python':
-        command   => "${installer_path} -b -p ${python::anaconda_install_path}",
-        creates   => $python::anaconda_install_path,
+        command   => "${installer_path} -b -p ${python_deprecated::anaconda_install_path}",
+        creates   => $python_deprecated::anaconda_install_path,
         logoutput => true,
       }
       -> exec { 'install_anaconda_virtualenv':
-        command => "${python::anaconda_install_path}/bin/pip install virtualenv",
-        creates => "${python::anaconda_install_path}/bin/virtualenv",
+        command => "${python_deprecated::anaconda_install_path}/bin/pip install virtualenv",
+        creates => "${python_deprecated::anaconda_install_path}/bin/virtualenv",
       }
     }
     default: {
       case $facts['os']['family'] {
         'AIX': {
-          if String($python::version) =~ /^python3/ {
-            class { 'python::pip::bootstrap':
+          if String($python_deprecated::version) =~ /^python3/ {
+            class { 'python_deprecated::pip::bootstrap':
                     version => 'pip3',
             }
           } else {
@@ -239,13 +239,13 @@ class python::install {
       case $facts['os']['family'] {
         'RedHat': {
           if $pip_ensure != 'absent' {
-            if $python::use_epel == true {
+            if $python_deprecated::use_epel == true {
               include 'epel'
               Class['epel'] -> Package['pip']
             }
           }
           if ($venv_ensure != 'absent') and ($::operatingsystemrelease =~ /^6/) {
-            if $python::use_epel == true {
+            if $python_deprecated::use_epel == true {
               include 'epel'
               Class['epel'] -> Package['virtualenv']
             }
@@ -268,7 +268,7 @@ class python::install {
         }
       }
 
-      if String($python::version) =~ /^python3/ {
+      if String($python_deprecated::version) =~ /^python3/ {
         $pip_category = undef
         $pip_package = "${python}-pip"
         $pip_provider = $python.regsubst(/^.*python3\.?/,'pip3.').regsubst(/\.$/,'')
@@ -291,7 +291,7 @@ class python::install {
         category => $pip_category,
       }
 
-      Python::Pip <| |> {
+      Python_deprecated::Pip <| |> {
         pip_provider => $pip_provider,
       }
 
@@ -301,16 +301,16 @@ class python::install {
     }
   }
 
-  if $python::manage_gunicorn {
-    $gunicorn_ensure = $python::gunicorn ? {
+  if $python_deprecated::manage_gunicorn {
+    $gunicorn_ensure = $python_deprecated::gunicorn ? {
       true    => 'present',
       false   => 'absent',
-      default => $python::gunicorn,
+      default => $python_deprecated::gunicorn,
     }
 
     package { 'gunicorn':
       ensure => $gunicorn_ensure,
-      name   => $python::gunicorn_package_name,
+      name   => $python_deprecated::gunicorn_package_name,
     }
   }
 }

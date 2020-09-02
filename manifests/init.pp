@@ -20,7 +20,7 @@
 # @param umask The default umask for invoked exec calls.
 #
 # @example install python from system python
-#   class { 'python':
+#   class { 'python_deprecated':
 #     version    => 'system',
 #     pip        => 'present',
 #     dev        => 'present',
@@ -28,36 +28,36 @@
 #     gunicorn   => 'present',
 #   }
 # @example install python3 from scl repo
-#   class { 'python' :
+#   class { 'python_deprecated' :
 #     ensure      => 'present',
 #     version     => 'rh-python36-python',
 #     dev         => 'present',
 #     virtualenv  => 'present',
 #   }
 #
-class python (
-  Enum['absent', 'present', 'latest'] $ensure     = $python::params::ensure,
-  $version                                        = $python::params::version,
-  Enum['absent', 'present', 'latest'] $pip        = $python::params::pip,
-  Enum['absent', 'present', 'latest'] $dev        = $python::params::dev,
-  Enum['absent', 'present', 'latest'] $virtualenv = $python::params::virtualenv,
-  Enum['absent', 'present', 'latest'] $gunicorn   = $python::params::gunicorn,
-  Boolean $manage_gunicorn                        = $python::params::manage_gunicorn,
-  $gunicorn_package_name                          = $python::params::gunicorn_package_name,
-  Optional[Enum['pip', 'scl', 'rhscl', 'anaconda', '']] $provider = $python::params::provider,
-  $valid_versions                                 = $python::params::valid_versions,
+class python_deprecated (
+  Enum['absent', 'present', 'latest'] $ensure     = $python_deprecated::params::ensure,
+  $version                                        = $python_deprecated::params::version,
+  Enum['absent', 'present', 'latest'] $pip        = $python_deprecated::params::pip,
+  Enum['absent', 'present', 'latest'] $dev        = $python_deprecated::params::dev,
+  Enum['absent', 'present', 'latest'] $virtualenv = $python_deprecated::params::virtualenv,
+  Enum['absent', 'present', 'latest'] $gunicorn   = $python_deprecated::params::gunicorn,
+  Boolean $manage_gunicorn                        = $python_deprecated::params::manage_gunicorn,
+  $gunicorn_package_name                          = $python_deprecated::params::gunicorn_package_name,
+  Optional[Enum['pip', 'scl', 'rhscl', 'anaconda', '']] $provider = $python_deprecated::params::provider,
+  $valid_versions                                 = $python_deprecated::params::valid_versions,
   Hash $python_pips                               = { },
   Hash $python_virtualenvs                        = { },
   Hash $python_pyvenvs                            = { },
   Hash $python_requirements                       = { },
   Hash $python_dotfiles                           = { },
-  Boolean $use_epel                               = $python::params::use_epel,
-  $rhscl_use_public_repository                    = $python::params::rhscl_use_public_repository,
-  Stdlib::Httpurl $anaconda_installer_url         = $python::params::anaconda_installer_url,
-  Stdlib::Absolutepath $anaconda_install_path     = $python::params::anaconda_install_path,
-  Boolean $manage_scl                             = $python::params::manage_scl,
+  Boolean $use_epel                               = $python_deprecated::params::use_epel,
+  $rhscl_use_public_repository                    = $python_deprecated::params::rhscl_use_public_repository,
+  Stdlib::Httpurl $anaconda_installer_url         = $python_deprecated::params::anaconda_installer_url,
+  Stdlib::Absolutepath $anaconda_install_path     = $python_deprecated::params::anaconda_install_path,
+  Boolean $manage_scl                             = $python_deprecated::params::manage_scl,
   Optional[Pattern[/[0-7]{1,4}/]] $umask          = undef,
-) inherits python::params {
+) inherits python_deprecated::params {
 
   $exec_prefix = $provider ? {
     'scl'   => "/usr/bin/scl enable ${version} -- ",
@@ -77,10 +77,10 @@ class python (
   }
 
   # Anchor pattern to contain dependencies
-  anchor { 'python::begin': }
-  -> class { 'python::install': }
-  -> class { 'python::config': }
-  -> anchor { 'python::end': }
+  anchor { 'python_deprecated::begin': }
+  -> class { 'python_deprecated::install': }
+  -> class { 'python_deprecated::config': }
+  -> anchor { 'python_deprecated::end': }
 
   # Set default umask.
   if $umask != undef {
@@ -88,10 +88,10 @@ class python (
   }
 
   # Allow hiera configuration of python resources
-  create_resources('python::pip', $python_pips)
-  create_resources('python::pyvenv', $python_pyvenvs)
-  create_resources('python::virtualenv', $python_virtualenvs)
-  create_resources('python::requirements', $python_requirements)
-  create_resources('python::dotfile', $python_dotfiles)
+  create_resources('python_deprecated::pip', $python_pips)
+  create_resources('python_deprecated::pyvenv', $python_pyvenvs)
+  create_resources('python_deprecated::virtualenv', $python_virtualenvs)
+  create_resources('python_deprecated::requirements', $python_requirements)
+  create_resources('python_deprecated::dotfile', $python_dotfiles)
 
 }
